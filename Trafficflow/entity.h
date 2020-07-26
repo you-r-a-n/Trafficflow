@@ -40,6 +40,7 @@ public:
 
 	void accelerationUpdate()
 	{
+		//第一辆车加速度随机且限速120
 		if (this->front == nullptr && this->speed >= 120)
 		{
 			this->acceleration = 120 - this->speed;
@@ -48,9 +49,14 @@ public:
 		{
 			this->acceleration = rand() % 10 + 1;//伪随机加速度范围[1，10]
 		}
+		//若车辆前120无车则加速行驶
+		else if (this->front->y - this->y >= 120)
+		{
+			this->acceleration = this->front->speed - this->speed + 10;
+		}
+		//跟驰
 		else
 		{
-			//调用跟驰模型
 			// m = 0;l = 1;灵敏度为2
 			this->acceleration = 2*(this->front->speed - this->speed) / (this->front->y - this->y);
 		}
