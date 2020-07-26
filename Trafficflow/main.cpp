@@ -9,8 +9,7 @@ int main()
 {
 	int t = 1;
 	Road road;
-
-	//每一个时长为t的步长内发生的事
+		////每一个时长为t的步长内发生的事
 	while (road.n<8)
 	{
 		if (_kbhit())
