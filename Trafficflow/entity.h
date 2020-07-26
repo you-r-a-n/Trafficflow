@@ -29,32 +29,36 @@ public:
 		g_id--;
 	}
 
-	//竖直线行驶行为，只有车辆y坐标改变
-	void driving() {
-		this->y += this->speed;
-	}
-
 	void showMessage() {
-		std::cout <<"id:"<<this->id<<"  坐标："<<this->x<<" "<<this->y<<"  速度："<<this->speed<<"  加速度："<<this->acceleration<<std::endl;
+		std::cout << "id:" << this->id << "  坐标：" << this->x << " " << this->y << "  速度：" << this->speed << "  加速度：" << this->acceleration << std::endl;
 	};
+
+	//竖直线行驶行为，只有车辆y坐标改变
+	void driving(int t) {
+		this->y += this->speed*t + t*t*this->acceleration/2;
+	}
 
 	void accelerationUpdate()
 	{
-		if (this->front == nullptr)
+		if (this->front == nullptr && this->speed >= 120)
+		{
+			this->acceleration = 120 - this->speed;
+		}
+		else if(this->front == nullptr)
 		{
 			this->acceleration = rand() % 10 + 1;//伪随机加速度范围[1，10]
 		}
 		else
 		{
 			//调用跟驰模型
-			// m = 0;l = 1;灵敏度为1
-			this->acceleration = (this->front->speed - this->speed) / (this->front->y - this->y);
+			// m = 0;l = 1;灵敏度为2
+			this->acceleration = 2*(this->front->speed - this->speed) / (this->front->y - this->y);
 		}
 	}
 
-	void speedUpdate()
+	void speedUpdate(int t)
 	{
-		this->speed += this->acceleration;
+			this->speed = this->speed + t*this->acceleration;
 	}
 };
 
